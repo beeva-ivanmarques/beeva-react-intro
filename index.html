@@ -1,5 +1,6 @@
 <html>
 <head>
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
@@ -7,17 +8,54 @@
 
 <body>
 
-	<div id="saludo"></div>
 	<div id="container"></div>
-	
+
 	<script type="text/babel">
+		var TextInput = React.createClass({
+			update: function (e) {
+				console.log('this.props', this.props)
+				this.props.onTextChange({value: e.target.value})
+			},
+			render: function() {
+				return (
+					<input type="text" value={this.props.value} onChange={this.update}/>
+				)
+			}
+		})
 
+		var Result = React.createClass({
+			render: function(){
+				return (<strong>{this.props.value}</strong>)
+			}
+		})
+		var InputBox = React.createClass({
+			getInitialState: function(){
+				return {}
+			},
+			componentDidMount: function() {
+				if(!this.state.value){
+					this.setState({value:'Valor inicial'})
+				}
+			},
+			update: function(value) {
+				this.setState(value)
+			},
+			render: function(){
+				return (
+					<div>
+					<TextInput onTextChange={this.update} value={this.state.value}/>
+					<p>
+						<Result value={this.state.value} />
+					</p>
+					</div>
+				)
+			}
+		})
 		ReactDOM.render(
-			<h1>Hola mundo</h1>,
-			document.getElementById('saludo')
-		);
+				<InputBox />, document.getElementById('container')
+		)
 
-		
+
 	</script/>
 </body>
 </html>
